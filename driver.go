@@ -33,7 +33,8 @@ type Config struct {
 	Endpoint    string
 	Username    string
 	Password    string
-	TenantID    string
+	ProjectName string
+	DomainName  string
 	InitiatorIP string
 }
 
@@ -97,7 +98,8 @@ func processConfig(cfg string) (Config, error) {
 	log.Infof("Set DefaultVolSz to: %d GiB", conf.DefaultVolSz)
 	log.Infof("Set Endpoint to: %s", conf.Endpoint)
 	log.Infof("Set Username to: %s", conf.Username)
-	log.Infof("Set TenantID to: %s", conf.TenantID)
+	log.Infof("Set ProjectName to: %s", conf.ProjectName)
+	log.Infof("Set DomainName to: %s", conf.DomainName)
 	return conf, nil
 }
 
@@ -113,11 +115,13 @@ func New(cfgFile string) CinderDriver {
 			log.Fatal("Failed to create Mount directory during driver init: %v", err)
 		}
 	}
+	// gophercloud retains TenantName/ID nomenclature for keystone v3
 	auth := gophercloud.AuthOptions{
 		IdentityEndpoint: conf.Endpoint,
 		Username:         conf.Username,
 		Password:         conf.Password,
-		TenantID:         conf.TenantID,
+		TenantName:      conf.ProjectName,
+		DomainName:       conf.DomainName,
 		AllowReauth:      true,
 	}
 	providerClient, err := openstack.AuthenticatedClient(auth)

@@ -1,6 +1,7 @@
 {
-    "Endpoint": "http://172.16.140.245:5000/v2.0",
-    "Username": "admin",
-    "Password": "solidfire",
-    "TenantID": "092eb256b5b9402abe57d59f58ae3dbc"
+    "Endpoint": "https://keystone.dev.harboros.net/v3",
+    "Username": "cinderdev",
+    "Password": "correcthorsebatterystaple",
+    "ProjectName": "demo",
+    "DomainName": "default"
 }
