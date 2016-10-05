@@ -20,6 +20,30 @@ Use curl to download and run the install script in the package Github repo::
 ```shell
 curl -sSl https://raw.githubusercontent.com/j-griffith/cinder-docker-driver/master/install.sh | sh
 ```
+
+
+###Install/Build RPM
+The Dockerfile in the root of this repo will build an RPM of the compiled driver, you can build it using:
+```shell
+docker build --tag=docker-cinder-driver-repo .
+```
+
+This creates the worlds smallest rpm repo (in terms of packges!), which can be started and used with the following:
+```shell
+CINDER_DRIVER_REPO=$(docker run -d docker-cinder-driver-repo)
+CINDER_DRIVER_REPO_IP=$(docker inspect  --format '{{ .NetworkSettings.IPAddress }}' ${CINDER_DRIVER_REPO})
+cat > /etc/yum.repos.d/docker-cinder-driver.repo <<EOF
+[docker-cinder-driver]
+name=docker-cinder-driver
+baseurl=http://${CINDER_DRIVER_REPO_IP}/x86_64/
+enabled=1
+gpgcheck=0
+skip_if_unavailable=1
+EOF
+yum install -y cinder-docker-driver
+```
+
+
 ##Configuration options
 Example config.json file:
 
