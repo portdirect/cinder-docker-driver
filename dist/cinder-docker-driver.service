@@ -1,11 +1,12 @@
 [Unit]
 Description="Cinder Docker Plugin daemon"
 Before=docker.service
-Requires=cinder-docker-driver.service
+#Requires=cinder-docker-driver.service
 
 [Service]
 TimeoutStartSec=0
 ExecStartPre=/usr/bin/mkdir -p /var/lib/cinder/dockerdriver /var/lib/cinder/mount
 ExecStart=/usr/bin/cinder-docker-driver
+
 [Install]
 WantedBy=docker.service
